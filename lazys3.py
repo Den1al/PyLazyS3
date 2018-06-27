@@ -18,6 +18,8 @@ def banner():
 
 
 def parse_args():
+    print(banner())
+
     parser = ArgumentParser(
         description='',
         formatter_class=ArgumentDefaultsHelpFormatter)
@@ -94,8 +96,8 @@ class Scanner(object):
 
 class WordlistGenerator(object):
 
-    common_environments = ('dev', 'development', 'stage',
-                           's3', 'staging', 'prod', 'production', 'test')
+    common_envs = ('dev', 'development', 'stage',
+                   's3', 'staging', 'prod', 'production', 'test')
 
     def __init__(self, wordlist_path: str, company_name: str):
         self.wordlist_path = wordlist_path
@@ -107,7 +109,7 @@ class WordlistGenerator(object):
                 yield line.strip()
 
     def _permute_envs(self, prefix: str):
-        for env in self.common_environments:
+        for env in self.common_envs:
             for fmt in ['%s-%s-%s', '%s-%s.%s', '%s-%s%s', '%s.%s-%s', '%s.%s.%s']:
                 yield fmt % (self.company_name, prefix, env)
 
@@ -128,7 +130,6 @@ class WordlistGenerator(object):
 
 
 def main():
-    print(banner())
     args = parse_args()
 
     Scanner(
