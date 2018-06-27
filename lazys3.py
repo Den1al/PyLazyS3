@@ -1,10 +1,11 @@
 import asyncio
 from aiohttp import ClientSession
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+import sys
 
 
 def banner():
-    return """
+    return r"""
   _____       _                      _____ ____  
  |  __ \     | |                    / ____|___ \ 
  | |__) |   _| |     __ _ _____   _| (___   __) |
@@ -30,11 +31,27 @@ def parse_args():
 
 
 def fail_silently(func):
-    async def _wrapper(*args, **kwargs):
+    async def _wrapper_async(*args, **kwargs):
         try:
             return await func(*args, **kwargs)
+        except KeyboardInterrupt:
+            print('Stopping scan...')
+            sys.exit(0)
         except:
             return None
+
+    def _wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except KeyboardInterrupt:
+            print('Stopping scan...')
+            sys.exit(0)
+        except:
+            return None
+
+    if asyncio.iscoroutinefunction(func):
+        return _wrapper_async
+
     return _wrapper
 
 
@@ -52,8 +69,9 @@ class Scanner(object):
             status_code = response.status
 
             if status_code != 404:
-                print(f'Found bucket: {url} ({status_code})')
+                print(f'[+] Found bucket: {url} ({status_code})')
 
+    @fail_silently
     async def _scan_all(self):
         bucket_gen = WordlistGenerator(self.wordlist_path, self.company_name)
         custom_headers = {
@@ -66,13 +84,12 @@ class Scanner(object):
                 for bucket in bucket_gen
             ])
 
+    @fail_silently
     def run(self):
-        try:
-            loop = asyncio.get_event_loop()
-            future = asyncio.ensure_future(self._scan_all())
-            loop.run_until_complete(future)
-        except KeyboardInterrupt:
-            print('Stopping scan...')
+        print('Started scanning...')
+        loop = asyncio.get_event_loop()
+        future = asyncio.ensure_future(self._scan_all())
+        loop.run_until_complete(future)
 
 
 class WordlistGenerator(object):
