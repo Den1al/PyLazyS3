@@ -113,10 +113,11 @@ class WordlistGenerator(object):
 def main():
     print(banner())
     args = parse_args()
-    # Scanner(
-    #     wordlist_path=args.prefixes,
-    #     company_name=args.name
-    # ).run()
+
+    Scanner(
+        wordlist_path=args.prefixes,
+        company_name=args.name
+    ).run()
 
 
 if __name__ == "__main__":
