@@ -1,7 +1,7 @@
 # PyLazyS3
 
 ## About
-A Python port of the original [lazys3](https://github.com/nahamsec/lazyrecon) script to bruteforce for AWS s3 buckets using different permutations, originally created by [@NahamSec](https://github.com/nahamsec). It utilizes the `asyncio` and `aiohttp` libraries to handle multiple high concurrency requests with great efficiency. 
+A Python port of the original [lazys3](https://github.com/nahamsec/lazyrecon) tool to bruteforce for AWS s3 buckets using different permutations, originally created by [@NahamSec](https://github.com/nahamsec). It utilizes the `asyncio` and `aiohttp` libraries to handle multiple high concurrency requests with great efficiency. 
 
 ## Installation
 After cloning the repository and navigating to the created folder, simply run:
