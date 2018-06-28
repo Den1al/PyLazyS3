@@ -30,7 +30,7 @@ def print_result_colored(text, status_code=None):
         print(text)
 
 def print_started(target, limit):
-    print(f'Started scanning {t.magenta(target)} with rate of {t.magenta(rate_limit)}...')
+    print(f'Started scanning {t.magenta(target)} with rate of {t.magenta(str(limit))} ...')
 
 def fail_silently(func):
     def handle_keyboard_interrupt():

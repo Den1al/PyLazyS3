@@ -7,7 +7,7 @@ def parse_args():
     print(banner())
 
     parser = ArgumentParser(
-        description='',
+        description='Bruteforce AWS s3 buckets using different permutations',
         formatter_class=ArgumentDefaultsHelpFormatter)
 
     parser.add_argument(
@@ -15,8 +15,7 @@ def parse_args():
     parser.add_argument('-p', '--prefixes', help='prefixes file to use',
                         default='common_bucket_prefixes.txt')
 
-    parser.add_argument('-l', '--limit', help='rate limit the http requests',
-                        default=50)
+    parser.add_argument('-l', '--limit', help='rate limit the http requests', default=100, type=int)
 
     return parser.parse_args()
 

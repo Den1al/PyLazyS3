@@ -4,7 +4,7 @@ from .wordlist import WordlistGenerator
 from .utils import print_result_colored, fail_silently, print_started
 
 class Scanner(object):
-    def __init__(self, wordlist_path: str, target: str, rate_limit=50):
+    def __init__(self, wordlist_path: str, target: str, rate_limit):
         self.wordlist_path = wordlist_path
         self.target = target
         self.rate_limit = rate_limit
@@ -23,7 +23,7 @@ class Scanner(object):
     @fail_silently
     async def _scan_all(self):
         bucket_gen = WordlistGenerator(self.wordlist_path, self.target)
-        connector = TCPConnector(limit=50)
+        connector = TCPConnector(limit=self.rate_limit)
         custom_headers = {
             'User-Agent': 'aiohttp client 0.17'
         }
