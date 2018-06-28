@@ -1,13 +1,17 @@
+# author:   @Daniel_Abeles
+# date:     26/06/18 
+
 import asyncio
 from aiohttp import ClientSession, TCPConnector
 from .wordlist import WordlistGenerator
 from .utils import print_result_colored, fail_silently, print_started
 
 class Scanner(object):
-    def __init__(self, wordlist_path: str, target: str, rate_limit):
+    def __init__(self, wordlist_path: str, target: str, rate_limit, user_agent: str):
         self.wordlist_path = wordlist_path
         self.target = target
         self.rate_limit = rate_limit
+        self.user_agent = user_agent
 
     @fail_silently
     async def _scan_single(self, bucket: str, session: ClientSession):
@@ -18,20 +22,21 @@ class Scanner(object):
             status_code = response.status
 
             if status_code != 404:
-                print_result_colored(f'[+] Found bucket: {url} ({status_code})', status_code)
+                print_result_colored(f'Found bucket: {url} ({status_code})', status_code)
 
     @fail_silently
     async def _scan_all(self):
-        bucket_gen = WordlistGenerator(self.wordlist_path, self.target)
-        connector = TCPConnector(limit=self.rate_limit)
-        custom_headers = {
-            'User-Agent': 'aiohttp client 0.17'
+        connection_args = {
+            'connector': TCPConnector(limit=self.rate_limit),
+            'headers': { 
+                'User-Agent': self.user_agent 
+            }
         }
 
-        async with ClientSession(headers=custom_headers, connector=connector) as session:
+        async with ClientSession(**connection_args) as session:
             await asyncio.gather(*[
                 asyncio.ensure_future(self._scan_single(bucket, session))
-                for bucket in bucket_gen
+                for bucket in WordlistGenerator(self.wordlist_path, self.target)
             ])
 
     @fail_silently

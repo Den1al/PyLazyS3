@@ -1,3 +1,6 @@
+# author:   @Daniel_Abeles
+# date:     26/06/18 
+
 import asyncio
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from lazys3.scanner import Scanner
@@ -16,6 +19,8 @@ def parse_args():
                         default='common_bucket_prefixes.txt')
 
     parser.add_argument('-l', '--limit', help='rate limit the http requests', default=100, type=int)
+    parser.add_argument('-u', '--user-agent', default='aiohttp client 0.17', type=str,
+                        help='which user agent to use when sending requests')
 
     return parser.parse_args()
 
@@ -26,7 +31,8 @@ def main():
     Scanner(
         wordlist_path=args.prefixes,
         target=args.target,
-        rate_limit=args.limit
+        rate_limit=args.limit,
+        user_agent=args.user_agent
     ).run()
 
 

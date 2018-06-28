@@ -8,7 +8,7 @@ import sys
 t = Terminal()
 
 def banner():
-    daniel_abeles = t.cyan("@Daniel_Abeles")
+    daniel_abeles = t.cyan_bold("@Daniel_Abeles")
     
     return f"""
   _____       _                      _____ ____  
@@ -23,18 +23,18 @@ def banner():
 
 def print_result_colored(text, status_code=None):
     if str(status_code).startswith('4'):
-        print(t.yellow(text))
+        print(t.yellow_bold('[+] ') + t.yellow(text))
     elif str(status_code).startswith('2'):
-        print(t.green(text))
+        print(t.green_bold('[+] ') + t.green(text))
     else:
         print(text)
 
 def print_started(target, limit):
-    print(f'Started scanning {t.magenta(target)} with rate of {t.magenta(str(limit))} ...')
+    print(f'Started scanning {t.magenta_underline(target)} with rate of {t.magenta_underline(str(limit))} ...')
 
 def fail_silently(func):
     def handle_keyboard_interrupt():
-        print("Stopping scan, wait for threads to finish...")
+        print(t.red(" Stopping scan, waiting for threads to safely finish ..."))
         sys.exit(0)
 
     async def _wrapper_async(*args, **kwargs):
