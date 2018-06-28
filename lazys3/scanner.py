@@ -1,10 +1,18 @@
 # author:   @Daniel_Abeles
 # date:     26/06/18 
 
+import os
 import asyncio
 from aiohttp import ClientSession, TCPConnector
+from aiohttp.resolver import AsyncResolver
 from .wordlist import WordlistGenerator
-from .utils import print_result_colored, fail_silently, print_started
+from .utils import (
+    print_result_colored, 
+    fail_silently, 
+    print_started,
+    consume_generator
+)
+
 
 class Scanner(object):
     def __init__(self, wordlist_path: str, target: str, rate_limit, user_agent: str):

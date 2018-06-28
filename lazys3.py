@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument(
         'target', help='which target to scan')
     parser.add_argument('-p', '--prefixes', help='prefixes file to use',
-                        default='common_bucket_prefixes.txt')
+                        default='lists/common_bucket_prefixes.txt')
 
     parser.add_argument('-l', '--limit', help='rate limit the http requests', default=100, type=int)
     parser.add_argument('-u', '--user-agent', default='aiohttp client 0.17', type=str,

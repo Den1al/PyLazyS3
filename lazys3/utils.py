@@ -57,3 +57,9 @@ def fail_silently(func):
         return _wrapper_async
 
     return _wrapper
+
+def consume_generator(func):
+    def _wrapper(*args, **kwargs):
+        return list(func(*args, **kwargs))
+    
+    return _wrapper
