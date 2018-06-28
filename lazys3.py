@@ -33,12 +33,15 @@ def parse_args():
 
 
 def fail_silently(func):
+    def handle_keyboard_interrupt():
+        print("Stopping scan, wait for threads to finish...")
+        sys.exit(0)
+
     async def _wrapper_async(*args, **kwargs):
         try:
             return await func(*args, **kwargs)
         except KeyboardInterrupt:
-            print('Stopping scan...')
-            sys.exit(0)
+            handle_keyboard_interrupt()
         except:
             return None
 
@@ -46,8 +49,7 @@ def fail_silently(func):
         try:
             return func(*args, **kwargs)
         except KeyboardInterrupt:
-            print('Stopping scan...')
-            sys.exit(0)
+            handle_keyboard_interrupt()
         except:
             return None
 
