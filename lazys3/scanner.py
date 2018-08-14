@@ -29,7 +29,7 @@ class Scanner(object):
             await response.read()
             status_code = response.status
 
-            if status_code != 404:
+            if status_code not in (404, 504):
                 print_result_colored(f'Found bucket: {url} ({status_code})', status_code)
 
     @fail_silently
